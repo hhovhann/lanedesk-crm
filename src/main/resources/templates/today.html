@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Today')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav('today')}"></nav>
+<main>
+  <div th:replace="~{fragments/layout :: flash}"></div>
+  <h1>Today <span class="muted small" th:text="${@fmt.agent(T(java.time.Instant).now())} + ' (' + ${@fmt.agentZoneName()} + ')'"></span></h1>
+
+  <div class="grid g4">
+    <div class="card metric"><div class="muted small">Calls</div>
+      <div class="v"><span th:text="${v.callsToday}">0</span><span class="muted small"> / <span th:text="${v.callsTarget}"></span></span></div>
+      <div class="bar"><i th:style="'width:' + ${T(java.lang.Math).min(100, v.callsToday * 100 / v.callsTarget)} + '%'"></i></div></div>
+    <div class="card metric"><div class="muted small">Conversations</div>
+      <div class="v"><span th:text="${v.conversationsToday}">0</span><span class="muted small"> / <span th:text="${v.conversationsTarget}"></span></span></div>
+      <div class="bar"><i th:style="'width:' + ${T(java.lang.Math).min(100, v.conversationsToday * 100 / v.conversationsTarget)} + '%'"></i></div></div>
+  </div>
+
+  <div class="card">
+    <h2>Follow-ups due (<span th:text="${#lists.size(v.followUps)}">0</span>)</h2>
+    <table>
+      <tr th:each="f : ${v.followUps}">
+        <td><a th:href="@{/companies/{id}(id=${f.activity.company.id})}" th:text="${f.activity.company.name}"></a>
+            <div class="muted small" th:text="${f.activity.notes}"></div></td>
+        <td th:if="${f.contact != null}"><span th:text="${f.contact.name}"></span><br><span class="small muted" th:text="${f.contact.phone}"></span></td>
+        <td th:if="${f.contact == null}" class="muted">no contact</td>
+        <td class="small" th:if="${f.contact != null}"><span th:text="${@fmt.clock(f.contact.timeZone)}"></span>
+          <span class="muted" th:text="${@fmt.zoneShort(f.contact.timeZone)}"></span>
+          <div th:text="${f.callableNow} ? 'open now' : 'closed'" th:class="${f.callableNow} ? 'small' : 'small muted'"></div></td>
+        <td class="small danger">due <span th:text="${@fmt.agent(f.activity.nextFollowUpAt)}"></span></td>
+        <td th:replace="~{:: quick(${f.activity.company.id}, ${f.contact?.id})}"></td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(v.followUps)}"><td class="muted">Nothing due. </td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Call list — open now in their time zone (<span th:text="${#lists.size(v.callList)}">0</span>)</h2>
+    <table>
+      <tr th:each="t : ${v.callList}">
+        <td><a th:href="@{/companies/{id}(id=${t.contact.company.id})}" th:text="${t.contact.company.name}"></a>
+            <span class="badge" th:classappend="${t.contact.company.status}" th:text="${t.contact.company.status}"></span></td>
+        <td><span th:text="${t.contact.name}"></span> <span class="muted small" th:text="${t.contact.title}"></span></td>
+        <td><a th:href="'tel:' + ${t.contact.phone}" th:text="${t.contact.phone}"></a></td>
+        <td class="small"><span th:text="${@fmt.clock(t.contact.timeZone)}"></span> <span class="muted" th:text="${@fmt.zoneShort(t.contact.timeZone)}"></span></td>
+        <td th:replace="~{:: quick(${t.contact.company.id}, ${t.contact.id})}"></td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(v.callList)}"><td class="muted">Nobody is in business hours right now (Mon–Fri 8–5 local) or you've called everyone.</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Loads moving</h2>
+    <table>
+      <tr th:each="s : ${v.loads}">
+        <td><a th:href="@{/pipeline}" th:text="'#' + ${s.id}"></a></td>
+        <td th:text="${s.lane}"></td><td th:text="${s.shipper.name}"></td>
+        <td><span class="badge" th:text="${s.status}"></span></td>
+        <td class="small" th:text="'Pickup ' + ${@fmt.agent(s.pickupAt)}"></td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(v.loads)}"><td class="muted">No covered or in-transit loads.</td></tr>
+    </table>
+  </div>
+</main>
+
+<td th:fragment="quick(companyId, contactId)">
+  <div class="quick" th:with="url=@{/companies/{id}/calls(id=${companyId})}, cid=${contactId != null} ? ${contactId} : 'null'">
+    <button th:hx-post="${url}" th:hx-vals="|{&quot;outcome&quot;:&quot;NO_ANSWER&quot;,&quot;followUpDays&quot;:2,&quot;quick&quot;:true,&quot;contactId&quot;:${cid}}|" hx-target="closest tr" hx-swap="outerHTML" title="No answer, follow up in 2 days">No answer</button>
+    <button th:hx-post="${url}" th:hx-vals="|{&quot;outcome&quot;:&quot;VOICEMAIL&quot;,&quot;followUpDays&quot;:2,&quot;quick&quot;:true,&quot;contactId&quot;:${cid}}|" hx-target="closest tr" hx-swap="outerHTML" title="Left voicemail, follow up in 2 days">Voicemail</button>
+    <button class="talk" th:hx-post="${url}" th:hx-vals="|{&quot;outcome&quot;:&quot;CONVERSATION&quot;,&quot;followUpDays&quot;:7,&quot;quick&quot;:true,&quot;contactId&quot;:${cid}}|" hx-target="closest tr" hx-swap="outerHTML" title="Spoke, follow up in 7 days">Talked</button>
+  </div>
+</td>
+</body>
+</html>

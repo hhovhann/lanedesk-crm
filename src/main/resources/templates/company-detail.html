@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${company.name})}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav('companies')}"></nav>
+<main>
+  <div th:replace="~{fragments/layout :: flash}"></div>
+  <h1><span th:text="${company.name}"></span>
+    <span class="badge" th:classappend="${company.status}" th:text="${company.status}"></span>
+    <a class="btn" style="float:right" th:href="@{/companies/{id}/edit(id=${company.id})}">Edit</a></h1>
+  <p class="muted" th:text="${company.type} + ' · ' + ${company.city} + (${company.state} != null ? ', ' + ${company.state} : '') + (${company.equipment} != null ? ' · ' + ${company.equipment} : '') + (${company.mcNumber} != null ? ' · MC ' + ${company.mcNumber} : '')"></p>
+  <p th:if="${company.notes}" th:text="${company.notes}"></p>
+  <div class="dnc" th:if="${company.doNotCall}">DO NOT CALL — calling is disabled for this company.</div>
+
+  <div class="grid g2">
+    <div>
+      <div class="card" th:unless="${company.doNotCall}">
+        <h2>Log a call</h2>
+        <form hx-post th:hx-post="@{/companies/{id}/calls(id=${company.id})}" hx-target="#timeline" hx-swap="outerHTML" hx-on::after-request="if(event.detail.successful) this.querySelector('textarea').value=''">
+          <div class="row">
+            <div><label>Who</label>
+              <select name="contactId"><option value="">— nobody in particular —</option>
+                <option th:each="c : ${contacts}" th:value="${c.id}" th:text="${c.name}" th:selected="${cStat.first}"></option></select></div>
+            <div><label>Follow up</label>
+              <select name="followUpDays"><option value="2">in 2 days</option><option value="1">tomorrow</option><option value="7">in a week</option><option value="30">in a month</option><option value="">no follow-up</option></select></div>
+          </div>
+          <div style="margin:10px 0"><label>Notes</label><textarea name="notes" rows="2" placeholder="What did they say?"></textarea></div>
+          <div class="row"><span class="muted small">Click the outcome to save:</span>
+            <button type="submit" name="outcome" value="NO_ANSWER">No answer</button>
+            <button type="submit" name="outcome" value="VOICEMAIL">Voicemail</button>
+            <button type="submit" class="talk" name="outcome" value="CONVERSATION">Talked</button>
+            <button type="submit" class="danger" name="outcome" value="NOT_INTERESTED">Not interested</button></div>
+        </form>
+      </div>
+      <div class="card"><h2>Timeline</h2><ul th:replace="~{fragments/timeline :: timeline}"></ul>
+        <form hx-post th:hx-post="@{/companies/{id}/notes(id=${company.id})}" hx-target="#timeline" hx-swap="outerHTML" class="row" style="margin-top:10px" hx-on::after-request="this.reset()">
+          <input name="notes" placeholder="Add a note…" style="flex:1" required><button type="submit">Add note</button></form>
+      </div>
+    </div>
+    <div>
+      <div class="card"><h2>Contacts</h2>
+        <div th:each="c : ${contacts}" style="margin-bottom:10px">
+          <b th:text="${c.name}"></b> <span class="muted small" th:text="${c.title}"></span><br>
+          <a th:if="${c.phone}" th:href="'tel:' + ${c.phone}" th:text="${c.phone}"></a>
+          <span th:if="${c.email}" class="small" th:text="${c.email}"></span><br>
+          <span class="small muted" th:text="${@fmt.clock(c.timeZone)} + ' ' + ${@fmt.zoneShort(c.timeZone)} + ' there now'"></span>
+        </div>
+        <p class="muted" th:if="${#lists.isEmpty(contacts)}">No contacts yet.</p>
+        <details><summary>+ Add contact</summary>
+          <form method="post" th:action="@{/companies/{id}/contacts(id=${company.id})}">
+            <label>Name *</label><input name="name" required style="width:100%">
+            <label>Title</label><input name="title" style="width:100%">
+            <label>Phone</label><input name="phone" style="width:100%">
+            <label>Email</label><input name="email" style="width:100%">
+            <label>Time zone</label><select name="timeZone" style="width:100%"><option th:each="z : ${@fmt.zones()}" th:value="${z}" th:text="${z}" th:selected="${z == 'America/Chicago'}"></option></select>
+            <p><button type="submit">Save contact</button></p>
+          </form></details>
+      </div>
+      <div class="card" th:if="${company.type.name() == 'SHIPPER'}"><h2>Loads</h2>
+        <div th:each="s : ${shipments}" class="small" style="margin-bottom:6px"><span class="badge" th:text="${s.status}"></span> <span th:text="${s.lane}"></span> · $<span th:text="${s.customerRate}"></span></div>
+        <p class="muted" th:if="${#lists.isEmpty(shipments)}">No loads yet.</p>
+        <a class="btn" th:href="@{/shipments/new(shipperId=${company.id})}">+ Quote a load</a>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

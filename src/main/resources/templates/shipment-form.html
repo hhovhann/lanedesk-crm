@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Quote a load')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav('pipeline')}"></nav>
+<main>
+  <div th:replace="~{fragments/layout :: flash}"></div>
+  <h1>Quote a load</h1>
+  <form class="card" method="post" th:action="@{/shipments}">
+    <div class="row">
+      <div><label>Shipper</label><select name="shipperId" required><option th:each="s : ${shippers}" th:value="${s.id}" th:text="${s.name}" th:selected="${s.id == shipperId}"></option></select></div>
+      <div><label>Equipment</label><select name="equipment"><option th:each="e : ${equipments}" th:value="${e}" th:text="${e}"></option></select></div>
+      <div><label>Weight (lbs, max 48,000)</label><input name="weightLbs" type="number" min="1" max="48000" required></div>
+      <div><label>Customer rate ($)</label><input name="customerRate" type="number" step="0.01" min="0" required></div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div><label>Origin city</label><input name="originCity" required></div><div><label>State</label><input name="originState" size="3" maxlength="2" required></div>
+      <div><label>Destination city</label><input name="destCity" required></div><div><label>State</label><input name="destState" size="3" maxlength="2" required></div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div><label>Pickup (<span th:text="${@fmt.agentZoneName()}"></span>)</label><input name="pickupAt" type="datetime-local" required></div>
+      <div><label>Delivery</label><input name="deliveryAt" type="datetime-local" required></div>
+    </div>
+    <p><button class="primary" type="submit">Create quote</button> <a class="btn" th:href="@{/pipeline}">Cancel</a></p>
+  </form>
+</main>
+</body>
+</html>

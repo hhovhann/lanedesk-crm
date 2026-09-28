@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Pipeline')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav('pipeline')}"></nav>
+<main style="max-width:none">
+  <div th:replace="~{fragments/layout :: flash}"></div>
+  <h1>Pipeline <a class="btn primary" style="float:right" th:href="@{/shipments/new}">+ Quote a load</a></h1>
+  <div class="board">
+    <div class="col" th:each="entry : ${board}">
+      <h2><span th:text="${entry.key}"></span><span class="muted" th:text="${#lists.size(entry.value)}"></span></h2>
+      <div class="load" th:each="s : ${entry.value}">
+        <div class="lane" th:text="${s.lane}"></div>
+        <a th:href="@{/companies/{id}(id=${s.shipper.id})}" th:text="${s.shipper.name}"></a>
+        <div class="muted" th:text="${s.equipment} + ' · ' + ${#numbers.formatInteger(s.weightLbs, 0, 'COMMA')} + ' lbs'"></div>
+        <div>Pickup <span th:text="${@fmt.agent(s.pickupAt)}"></span></div>
+        <div>Rate $<span th:text="${s.customerRate}"></span>
+          <span th:if="${s.margin != null}">· margin $<b th:text="${s.margin}"></b></span></div>
+        <div th:if="${s.carrier != null}" class="muted" th:text="'Carrier: ' + ${s.carrier.name}"></div>
+        <div th:if="${s.lostReason}" class="danger" th:text="${s.lostReason}"></div>
+
+        <form th:if="${s.status.name() == 'QUOTED'}" method="post" th:action="@{/shipments/{id}/advance(id=${s.id})}">
+          <button class="talk" type="submit">Won ✓</button></form>
+        <form th:if="${s.status.name() == 'WON'}" method="post" th:action="@{/shipments/{id}/advance(id=${s.id})}">
+          <select name="carrierId" required><option value="">Carrier…</option><option th:each="c : ${carriers}" th:value="${c.id}" th:text="${c.name}"></option></select>
+          <input name="carrierCost" type="number" step="0.01" min="0" placeholder="Carrier cost $" required>
+          <button class="primary" type="submit">Cover</button></form>
+        <form th:if="${s.status.name() == 'COVERED'}" method="post" th:action="@{/shipments/{id}/advance(id=${s.id})}">
+          <button class="primary" type="submit">Picked up → In transit</button></form>
+        <form th:if="${s.status.name() == 'IN_TRANSIT'}" method="post" th:action="@{/shipments/{id}/advance(id=${s.id})}">
+          <button class="talk" type="submit">Delivered ✓</button></form>
+        <form th:if="${s.status.name() == 'QUOTED' or s.status.name() == 'WON'}" method="post" th:action="@{/shipments/{id}/lost(id=${s.id})}">
+          <input name="reason" placeholder="Lost reason" required><button class="danger" type="submit">Lost</button></form>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

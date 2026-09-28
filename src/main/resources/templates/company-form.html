@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Company')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav('companies')}"></nav>
+<main>
+  <div th:replace="~{fragments/layout :: flash}"></div>
+  <h1 th:text="${company.id == null} ? 'New company' : 'Edit ' + ${company.name}"></h1>
+  <form class="card" method="post" th:action="${company.id == null} ? @{/companies} : @{/companies/{id}(id=${company.id})}">
+    <div class="row">
+      <div><label>Name *</label><input name="name" th:value="${company.name}" required size="30"></div>
+      <div><label>Type</label><select name="type"><option th:each="t : ${types}" th:value="${t}" th:text="${t}" th:selected="${t == company.type}"></option></select></div>
+      <div><label>Status</label><select name="status"><option th:each="t : ${statuses}" th:value="${t}" th:text="${t}" th:selected="${t == company.status}"></option></select></div>
+      <div><label>Equipment</label><select name="equipment"><option value="">—</option><option th:each="t : ${equipments}" th:value="${t}" th:text="${t}" th:selected="${t == company.equipment}"></option></select></div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div><label>MC #</label><input name="mcNumber" th:value="${company.mcNumber}"></div>
+      <div><label>City</label><input name="city" th:value="${company.city}"></div>
+      <div><label>State</label><input name="state" th:value="${company.state}" size="3" maxlength="2"></div>
+      <div><label>Website</label><input name="website" th:value="${company.website}"></div>
+    </div>
+    <div style="margin-top:12px"><label>Notes</label><textarea name="notes" rows="3" th:text="${company.notes}"></textarea></div>
+    <p><button class="primary" type="submit">Save</button> <a class="btn" th:href="${company.id == null} ? @{/companies} : @{/companies/{id}(id=${company.id})}">Cancel</a></p>
+  </form>
+</main>
+</body>
+</html>

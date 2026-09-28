@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<ul class="tl" id="timeline" th:fragment="timeline">
+  <li th:each="a : ${activities}">
+    <b th:text="${a.type == T(com.lanedesk.activity.ActivityType).CALL} ? 'Call' : (${a.type.name()} == 'NOTE' ? 'Note' : 'Email')">Call</b>
+    <span th:if="${a.outcome != null}" class="badge" th:text="${a.outcome.label}"></span>
+    <span class="muted small" th:text="${a.contact != null} ? '· ' + ${a.contact.name} : ''"></span>
+    <span class="muted small" style="float:right" th:text="${@fmt.agent(a.occurredAt)}"></span>
+    <div th:if="${a.notes != null}" th:text="${a.notes}"></div>
+    <div class="small" th:if="${a.nextFollowUpAt != null}"
+         th:classappend="${a.followUpDone} ? 'muted' : 'danger'"
+         th:text="${a.followUpDone} ? 'Follow-up done' : 'Follow up ' + ${@fmt.agent(a.nextFollowUpAt)}"></div>
+  </li>
+  <li class="muted" th:if="${#lists.isEmpty(activities)}">No activity yet.</li>
+</ul>
+</body>
+</html>

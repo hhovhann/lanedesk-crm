@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Stats')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav('stats')}"></nav>
+<main>
+  <h1>Stats</h1>
+  <div class="grid g4">
+    <div class="card metric" th:each="m : ${T(java.util.List).of(v.callsToday, v.conversationsToday, v.quotesWeek, v.loadsWeek)}">
+      <div class="muted small" th:text="${m.label}"></div>
+      <div class="v"><span th:text="${m.value}"></span><span class="muted small"> / <span th:text="${m.target}"></span></span></div>
+      <div class="bar"><i th:style="'width:' + ${m.percent} + '%'"></i></div>
+    </div>
+  </div>
+  <div class="grid g4">
+    <div class="card metric"><div class="muted small">Win rate</div><div class="v"><span th:text="${v.winRatePct}"></span>%</div>
+      <div class="muted small"><span th:text="${v.won}"></span> won · <span th:text="${v.lost}"></span> lost</div></div>
+    <div class="card metric"><div class="muted small">Margin this week</div><div class="v">$<span th:text="${#numbers.formatDecimal(v.marginWeek, 1, 'COMMA', 2, 'POINT')}"></span></div>
+      <div class="muted small">Commission (<span th:text="${v.commissionPct}"></span>%): $<span th:text="${#numbers.formatDecimal(v.commissionWeek, 1, 'COMMA', 2, 'POINT')}"></span></div></div>
+    <div class="card metric"><div class="muted small">Margin this month</div><div class="v">$<span th:text="${#numbers.formatDecimal(v.marginMonth, 1, 'COMMA', 2, 'POINT')}"></span></div>
+      <div class="muted small">Commission: $<span th:text="${#numbers.formatDecimal(v.commissionMonth, 1, 'COMMA', 2, 'POINT')}"></span></div></div>
+  </div>
+  <div class="card"><h2>Last 7 days</h2>
+    <table><tr><th>Day</th><th>Calls</th><th>Conversations</th></tr>
+      <tr th:each="d : ${v.days}"><td th:text="${#temporals.format(d.date, 'EEE MMM d')}"></td><td th:text="${d.calls}"></td><td th:text="${d.conversations}"></td></tr></table></div>
+</main>
+</body>
+</html>

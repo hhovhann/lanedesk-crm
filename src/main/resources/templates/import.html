@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Import')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav('companies')}"></nav>
+<main>
+  <div th:replace="~{fragments/layout :: flash}"></div>
+  <h1>Import companies from CSV</h1>
+  <div class="card" th:if="${result}">
+    <b><span th:text="${result.imported}"></span> imported</b>, <span th:text="${result.skipped}"></span> skipped.
+    <ul><li th:each="p : ${result.problems}" th:text="${p}"></li></ul>
+  </div>
+  <form class="card" method="post" enctype="multipart/form-data" th:action="@{/companies/import}">
+    <p class="muted">Header row required. Columns: <code>name</code> (required), type, status, mc_number, city, state, equipment, website, notes,
+      contact_name, contact_title, contact_phone, contact_email, contact_time_zone. Duplicates (same MC number, or same name + state) are skipped.</p>
+    <input type="file" name="file" accept=".csv,text/csv" required>
+    <button class="primary" type="submit">Import</button>
+  </form>
+</main>
+</body>
+</html>

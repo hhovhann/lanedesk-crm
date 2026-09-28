@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf" th:if="${_csrf != null}" th:content="${_csrf.token}">
+  <title th:text="${title} + ' · LaneDesk'">LaneDesk</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+  <script th:src="@{/js/htmx.min.js}" defer></script>
+  <script th:src="@{/js/app.js}" defer></script>
+</head>
+<body>
+<nav th:fragment="nav(active)">
+  <span class="logo">LaneDesk</span>
+  <a th:href="@{/}" th:classappend="${active == 'today'} ? 'active'">Today</a>
+  <a th:href="@{/companies}" th:classappend="${active == 'companies'} ? 'active'">Companies</a>
+  <a th:href="@{/pipeline}" th:classappend="${active == 'pipeline'} ? 'active'">Pipeline</a>
+  <a th:href="@{/stats}" th:classappend="${active == 'stats'} ? 'active'">Stats</a>
+  <form th:action="@{/logout}" method="post"><button type="submit">Log out</button></form>
+</nav>
+<div th:fragment="flash">
+  <div class="flash error" th:if="${error}" th:text="${error}"></div>
+  <div class="flash message" th:if="${message}" th:text="${message}"></div>
+</div>
+</body>
+</html>

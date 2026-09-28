@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Companies')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav('companies')}"></nav>
+<main>
+  <div th:replace="~{fragments/layout :: flash}"></div>
+  <h1>Companies <a class="btn primary" th:href="@{/companies/new}" style="float:right">+ New</a>
+      <a class="btn" th:href="@{/companies/import}" style="float:right;margin-right:8px">Import CSV</a></h1>
+  <form class="card row" method="get" th:action="@{/companies}">
+    <div><label>Search</label><input name="q" th:value="${f.q}" placeholder="name"></div>
+    <div><label>Type</label><select name="type"><option value="">All</option><option th:each="t : ${types}" th:value="${t}" th:text="${t}" th:selected="${t == f.type}"></option></select></div>
+    <div><label>Status</label><select name="status"><option value="">All</option><option th:each="t : ${statuses}" th:value="${t}" th:text="${t}" th:selected="${t == f.status}"></option></select></div>
+    <div><label>State</label><input name="state" th:value="${f.state}" size="3" maxlength="2"></div>
+    <div><label>Equipment</label><select name="equipment"><option value="">All</option><option th:each="t : ${equipments}" th:value="${t}" th:text="${t}" th:selected="${t == f.equipment}"></option></select></div>
+    <button class="primary" type="submit">Filter</button>
+  </form>
+  <div class="card">
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Status</th><th>Location</th><th>Equipment</th><th>MC</th></tr>
+      <tr th:each="c : ${companies}">
+        <td><a th:href="@{/companies/{id}(id=${c.id})}" th:text="${c.name}"></a></td>
+        <td th:text="${c.type}"></td>
+        <td><span class="badge" th:classappend="${c.status}" th:text="${c.status}"></span></td>
+        <td th:text="${c.city} + (${c.state} != null ? ', ' + ${c.state} : '')"></td>
+        <td th:text="${c.equipment}"></td><td th:text="${c.mcNumber}"></td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(companies)}"><td colspan="6" class="muted">No companies match.</td></tr>
+    </table>
+  </div>
+</main>
+</body>
+</html>
