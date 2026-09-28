@@ -12,10 +12,10 @@
 <body>
 <nav th:fragment="nav(active)">
   <span class="logo">LaneDesk</span>
-  <a th:href="@{/}" th:classappend="${active == 'today'} ? 'active'">Today</a>
-  <a th:href="@{/companies}" th:classappend="${active == 'companies'} ? 'active'">Companies</a>
-  <a th:href="@{/pipeline}" th:classappend="${active == 'pipeline'} ? 'active'">Pipeline</a>
-  <a th:href="@{/stats}" th:classappend="${active == 'stats'} ? 'active'">Stats</a>
+  <a th:href="@{/}" th:classappend="${active == 'today'} ? 'active'"><span class="ic">📞</span>Today</a>
+  <a th:href="@{/companies}" th:classappend="${active == 'companies'} ? 'active'"><span class="ic">🏢</span>Companies</a>
+  <a th:href="@{/pipeline}" th:classappend="${active == 'pipeline'} ? 'active'"><span class="ic">🚛</span>Pipeline</a>
+  <a th:href="@{/stats}" th:classappend="${active == 'stats'} ? 'active'"><span class="ic">📊</span>Stats</a>
   <form th:action="@{/logout}" method="post"><button type="submit">Log out</button></form>
 </nav>
 <div th:fragment="flash">

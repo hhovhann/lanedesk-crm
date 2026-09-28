@@ -51,7 +51,7 @@ public class StatsService {
 
     public record View(Metric callsToday, Metric conversationsToday, Metric quotesWeek, Metric loadsWeek,
                        BigDecimal winRatePct, int won, int lost, BigDecimal marginWeek, BigDecimal commissionWeek,
-                       BigDecimal marginMonth, BigDecimal commissionMonth, List<Day> days, BigDecimal commissionPct) {}
+                       BigDecimal marginMonth, BigDecimal commissionMonth, List<Day> days, String commissionPct) {}
 
     public View build() {
         ZoneId zone = props.agentTimeZone();
@@ -95,7 +95,7 @@ public class StatsService {
                 new Metric("Quotes this week", BigDecimal.valueOf(shipments.countByQuotedAtBetween(weekFrom, weekTo)), BigDecimal.valueOf(t.quotesPerWeek()), ""),
                 new Metric("Loads this week", BigDecimal.valueOf(bookedWeek.size()), BigDecimal.valueOf(t.loadsPerWeek()), ""),
                 winRate, won, lost, marginWeek, commission(marginWeek), marginMonth, commission(marginMonth), days,
-                props.commissionPct().multiply(BigDecimal.valueOf(100)).stripTrailingZeros());
+                props.commissionPct().multiply(BigDecimal.valueOf(100)).stripTrailingZeros().toPlainString());
     }
 
     private BigDecimal margin(List<Shipment> list) {

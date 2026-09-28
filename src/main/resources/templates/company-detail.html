@@ -7,8 +7,8 @@
   <div th:replace="~{fragments/layout :: flash}"></div>
   <h1><span th:text="${company.name}"></span>
     <span class="badge" th:classappend="${company.status}" th:text="${company.status}"></span>
-    <a class="btn" style="float:right" th:href="@{/companies/{id}/edit(id=${company.id})}">Edit</a></h1>
-  <p class="muted" th:text="${company.type} + ' · ' + ${company.city} + (${company.state} != null ? ', ' + ${company.state} : '') + (${company.equipment} != null ? ' · ' + ${company.equipment} : '') + (${company.mcNumber} != null ? ' · MC ' + ${company.mcNumber} : '')"></p>
+    <span class="actions"><a class="btn" th:href="@{/companies/{id}/edit(id=${company.id})}">Edit</a></span></h1>
+  <p class="sub" th:text="${company.type} + ' · ' + ${company.city} + (${company.state} != null ? ', ' + ${company.state} : '') + (${company.equipment} != null ? ' · ' + ${company.equipment} : '') + (${company.mcNumber} != null ? ' · MC ' + ${company.mcNumber} : '')"></p>
   <p th:if="${company.notes}" th:text="${company.notes}"></p>
   <div class="dnc" th:if="${company.doNotCall}">DO NOT CALL — calling is disabled for this company.</div>
 
@@ -39,8 +39,8 @@
     </div>
     <div>
       <div class="card"><h2>Contacts</h2>
-        <div th:each="c : ${contacts}" style="margin-bottom:10px">
-          <b th:text="${c.name}"></b> <span class="muted small" th:text="${c.title}"></span><br>
+        <div th:each="c : ${contacts}" class="contact">
+          <span class="avatar" th:text="${#strings.substring(c.name,0,1)}"></span><b th:text="${c.name}"></b> <span class="muted small" th:text="${c.title}"></span><br>
           <a th:if="${c.phone}" th:href="'tel:' + ${c.phone}" th:text="${c.phone}"></a>
           <span th:if="${c.email}" class="small" th:text="${c.email}"></span><br>
           <span class="small muted" th:text="${@fmt.clock(c.timeZone)} + ' ' + ${@fmt.zoneShort(c.timeZone)} + ' there now'"></span>

@@ -5,8 +5,8 @@
 <nav th:replace="~{fragments/layout :: nav('companies')}"></nav>
 <main>
   <div th:replace="~{fragments/layout :: flash}"></div>
-  <h1>Companies <a class="btn primary" th:href="@{/companies/new}" style="float:right">+ New</a>
-      <a class="btn" th:href="@{/companies/import}" style="float:right;margin-right:8px">Import CSV</a></h1>
+  <h1>Companies <span class="actions"><a class="btn" th:href="@{/companies/import}">⬆ Import CSV</a><a class="btn primary" th:href="@{/companies/new}">+ New company</a></span></h1>
+  <p class="sub">Shippers, brokers and carriers you work with.</p>
   <form class="card row" method="get" th:action="@{/companies}">
     <div><label>Search</label><input name="q" th:value="${f.q}" placeholder="name"></div>
     <div><label>Type</label><select name="type"><option value="">All</option><option th:each="t : ${types}" th:value="${t}" th:text="${t}" th:selected="${t == f.type}"></option></select></div>

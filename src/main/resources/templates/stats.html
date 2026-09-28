@@ -5,6 +5,7 @@
 <nav th:replace="~{fragments/layout :: nav('stats')}"></nav>
 <main>
   <h1>Stats</h1>
+  <p class="sub">How you are tracking against your targets.</p>
   <div class="grid g4">
     <div class="card metric" th:each="m : ${T(java.util.List).of(v.callsToday, v.conversationsToday, v.quotesWeek, v.loadsWeek)}">
       <div class="muted small" th:text="${m.label}"></div>

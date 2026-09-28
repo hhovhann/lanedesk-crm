@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<td th:fragment="quick(companyId, contactId)">
+  <div class="quick" th:with="url=@{/companies/{id}/calls(id=${companyId})}, cid=${contactId != null} ? ${contactId} : 'null'">
+    <button th:hx-post="${url}" th:hx-vals="|{&quot;outcome&quot;:&quot;NO_ANSWER&quot;,&quot;followUpDays&quot;:2,&quot;quick&quot;:true,&quot;contactId&quot;:${cid}}|" hx-target="closest tr" hx-swap="outerHTML" title="No answer, follow up in 2 days">No answer</button>
+    <button th:hx-post="${url}" th:hx-vals="|{&quot;outcome&quot;:&quot;VOICEMAIL&quot;,&quot;followUpDays&quot;:2,&quot;quick&quot;:true,&quot;contactId&quot;:${cid}}|" hx-target="closest tr" hx-swap="outerHTML" title="Left voicemail, follow up in 2 days">Voicemail</button>
+    <button class="talk" th:hx-post="${url}" th:hx-vals="|{&quot;outcome&quot;:&quot;CONVERSATION&quot;,&quot;followUpDays&quot;:7,&quot;quick&quot;:true,&quot;contactId&quot;:${cid}}|" hx-target="closest tr" hx-swap="outerHTML" title="Spoke, follow up in 7 days">Talked</button>
+  </div>
+</td>
+</body>
+</html>

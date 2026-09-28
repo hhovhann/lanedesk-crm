@@ -5,7 +5,8 @@
 <nav th:replace="~{fragments/layout :: nav('pipeline')}"></nav>
 <main style="max-width:none">
   <div th:replace="~{fragments/layout :: flash}"></div>
-  <h1>Pipeline <a class="btn primary" style="float:right" th:href="@{/shipments/new}">+ Quote a load</a></h1>
+  <h1>Pipeline <span class="actions"><a class="btn primary" th:href="@{/shipments/new}">+ Quote a load</a></span></h1>
+  <p class="sub">Every load from quote to delivery.</p>
   <div class="board">
     <div class="col" th:each="entry : ${board}">
       <h2><span th:text="${entry.key}"></span><span class="muted" th:text="${#lists.size(entry.value)}"></span></h2>
