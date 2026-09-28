@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: lanedesk-crm
+  datasource:
+    url: jdbc:postgresql://localhost:5432/lanedesk
+    username: lanedesk
+    password: ${LANEDESK_DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    locations: classpath:db/migration
+  thymeleaf:
+    cache: false
+
+lanedesk:
+  security:
+    user: ${LANEDESK_USER}
+    password: ${LANEDESK_PASSWORD}
+  commission-pct: 0.70
+  agent-time-zone: Asia/Yerevan
+  targets:
+    calls-per-day: 100
+    conversations-per-day: 15
+    quotes-per-week: 10
+    loads-per-week: 5
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  flyway:
+    locations: classpath:db/migration,classpath:db/seed
