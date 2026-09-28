@@ -4,6 +4,12 @@ A single-user CRM for a US freight sales agent: work a call list, log calls in o
 
 Stack: Java 27, Spring Boot 4.1.1, PostgreSQL, Flyway, Thymeleaf + htmx. Phase 1 only (no AI yet).
 
+## Demo
+
+[![LaneDesk demo](docs/lanedesk-demo.png)](docs/lanedesk-demo.mp4)
+
+A 3-minute walkthrough of a freight agent's day: [docs/lanedesk-demo.mp4](docs/lanedesk-demo.mp4) (captions: [.srt](docs/lanedesk-demo.srt), [.vtt](docs/lanedesk-demo.vtt); the narration is a synthetic voice). The step-by-step script is in [docs/DEMO.md](docs/DEMO.md).
+
 ## Run it
 
 ```bash

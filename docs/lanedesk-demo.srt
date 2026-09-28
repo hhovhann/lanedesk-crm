@@ -1,0 +1,160 @@
+1
+00:00:00,422 --> 00:00:04,268
+This is LaneDesk, a small CRM built for a freight sales agent.
+
+2
+00:00:04,268 --> 00:00:10,161
+It is one screen for the whole day: who to call, what was promised, and which loads are moving.
+
+3
+00:00:10,161 --> 00:00:13,201
+Let's sign in and walk through a typical morning.
+
+4
+00:00:14,203 --> 00:00:15,715
+This is the Today screen.
+
+5
+00:00:15,715 --> 00:00:19,223
+At the top are the day's targets, calls and conversations.
+
+6
+00:00:19,223 --> 00:00:22,308
+Below are follow-ups that are due, and a call list.
+
+7
+00:00:22,308 --> 00:00:28,114
+The call list only shows people who are inside business hours right now, in their own time zone.
+
+8
+00:00:28,114 --> 00:00:35,856
+The clock next to each name is their local time, so you never wake someone up in Denver or call Honolulu at five in the morning.
+
+9
+00:00:36,858 --> 00:00:38,764
+Logging a call takes one click.
+
+10
+00:00:38,764 --> 00:00:43,191
+Pacific Rim Electronics did not pick up last time, so I click Voicemail.
+
+11
+00:00:43,191 --> 00:00:48,847
+The row disappears, the call is recorded, and the next follow up is scheduled automatically.
+
+12
+00:00:48,847 --> 00:00:50,876
+The same works for the call list.
+
+13
+00:00:50,876 --> 00:00:52,167
+Talked to a prospect?
+
+14
+00:00:52,167 --> 00:00:54,565
+One click, and it is on their timeline.
+
+15
+00:00:55,568 --> 00:00:58,318
+For a longer conversation, open the company.
+
+16
+00:00:58,318 --> 00:01:00,880
+Lone Star Building Supply wants flatbeds.
+
+17
+00:01:00,880 --> 00:01:06,193
+I pick who I spoke to, choose when to follow up, type a quick note, and click Talked.
+
+18
+00:01:06,193 --> 00:01:11,568
+That is three clicks, and the timeline updates right away, without reloading the page.
+
+19
+00:01:12,571 --> 00:01:14,716
+Now the customer asks for a price.
+
+20
+00:01:14,716 --> 00:01:22,479
+From the company page I quote a load: Dallas to Kansas City, flatbed, forty thousand pounds, at twenty one hundred dollars.
+
+21
+00:01:22,479 --> 00:01:29,232
+The form refuses weights above forty eight thousand pounds, the legal limit, so a typo cannot slip through.
+
+22
+00:01:30,233 --> 00:01:33,376
+The pipeline shows every load from quote to delivery.
+
+23
+00:01:33,376 --> 00:01:35,629
+The customer says yes, so I click Won.
+
+24
+00:01:35,629 --> 00:01:39,661
+To cover the load I choose a carrier and enter what I will pay them.
+
+25
+00:01:39,661 --> 00:01:43,041
+The margin appears instantly, four hundred fifty dollars.
+
+26
+00:01:43,041 --> 00:01:47,666
+Then one click when the truck is picked up, and one more when it is delivered.
+
+27
+00:01:47,666 --> 00:01:52,825
+A load cannot be covered without a carrier, and cannot be marked lost without a reason.
+
+28
+00:01:53,827 --> 00:01:56,103
+Some companies must never be called.
+
+29
+00:01:56,103 --> 00:01:58,885
+Bayou Chemical Supply is marked Do Not Call.
+
+30
+00:01:58,885 --> 00:02:06,030
+The company page shows a clear warning, the call form is gone, and the company never appears on the Today screen.
+
+31
+00:02:07,031 --> 00:02:15,295
+The Stats screen shows how the week is going against your targets: calls, conversations, quotes and loads, your win rate, and your margin.
+
+32
+00:02:15,295 --> 00:02:20,983
+Commission is calculated from the margin using your percentage, for the week and for the month.
+
+33
+00:02:21,985 --> 00:02:23,726
+Coming from a spreadsheet?
+
+34
+00:02:23,726 --> 00:02:26,807
+Import companies and contacts from a CSV file.
+
+35
+00:02:26,807 --> 00:02:31,628
+Duplicates are detected by MC number, or by name and state, and skipped.
+
+36
+00:02:31,628 --> 00:02:36,919
+Bad rows are reported with the line number instead of failing the whole import.
+
+37
+00:02:37,920 --> 00:02:44,752
+That is LaneDesk: call, quote, cover, deliver, and see your numbers, on one screen, with almost no clicking.
+
+38
+00:02:44,752 --> 00:02:45,890
+This is phase one.
+
+39
+00:02:45,890 --> 00:02:49,432
+The voice in this video is synthetic, generated locally.
+
+40
+00:02:49,432 --> 00:02:52,342
+Thanks for watching, and please send feedback.
+
