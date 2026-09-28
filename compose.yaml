@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: lanedesk
       POSTGRES_PASSWORD: ${LANEDESK_DB_PASSWORD:?set LANEDESK_DB_PASSWORD}
     ports:
-      - "5432:5432"
+      - "${LANEDESK_DB_PORT:-5432}:5432"
     volumes:
       - lanedesk-pgdata:/var/lib/postgresql
 

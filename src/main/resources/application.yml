@@ -2,7 +2,7 @@ spring:
   application:
     name: lanedesk-crm
   datasource:
-    url: jdbc:postgresql://localhost:5432/lanedesk
+    url: jdbc:postgresql://localhost:${LANEDESK_DB_PORT:5432}/lanedesk
     username: lanedesk
     password: ${LANEDESK_DB_PASSWORD}
   jpa:
